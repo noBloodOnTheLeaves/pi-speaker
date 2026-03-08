@@ -10,11 +10,11 @@ title: "Raspberry Pi audio (Bluetooth speaker)"
 
 Use a Bluetooth speaker as the Pi's default audio output so OpenClaw can play TTS, alarms, and announcements through it. Do the steps in order and confirm each phase works before moving on.
 
-## Phase 1: Bluetooth speaker setup
+## Bluetooth speaker setup
 
 Goal: Pair the speaker and set it as the system default output.
 
-### 1.1 Prerequisites
+### Prerequisites
 
 - **OS**: Raspberry Pi OS (64-bit), Desktop or Lite. On Lite, use SSH and CLI only.
 - **Bluetooth**: Pi 5 has built-in Bluetooth. If you disabled it for performance (see [Raspberry Pi](/platforms/raspberry-pi) "Reduce Memory Usage"), re-enable it:
@@ -23,7 +23,7 @@ Goal: Pair the speaker and set it as the system default output.
 sudo systemctl enable bluetooth && sudo systemctl start bluetooth
 ```
 
-### 1.2 Audio stack: PulseAudio or PipeWire
+### Audio stack: PulseAudio or PipeWire
 
 Raspberry Pi OS (Bookworm and later) use **PipeWire**. Check which you have:
 
@@ -33,7 +33,7 @@ Install Bluetooth audio support:
 
 - **PipeWire**: `sudo apt install -y pipewire pipewire-pulse wireplumber` and ensure the session is running. Bluetooth is usually handled by WirePlumber.
 
-### 1.3 Pair and connect the speaker
+### Pair and connect the speaker
 
 1. Put the speaker in **pairing mode** (see its manual).
 2. On the Pi, open `bluetoothctl`:
@@ -46,7 +46,7 @@ Install Bluetooth audio support:
 
 On Desktop you can use the Bluetooth tray to pair and connect instead.
 
-### 1.4 Set Bluetooth as default output
+### Set Bluetooth as default output
 
 **PulseAudio:**
 
@@ -66,7 +66,7 @@ wpctl status
 wpctl set-default <sink-id>
 ```
 
-### 1.5 Verify playback
+### Verify playback
 
 Play a test sound to the default output:
 
@@ -79,9 +79,9 @@ Confirm sound comes from the **Bluetooth speaker**. If not, check: `bluetoothctl
 
 ---
 
-## Phase 2: OpenClaw playing through the Pi speaker
+## OpenClaw playing through the Pi speaker
 
-Goal: Play TTS (or any audio file) on the Pi's default output so you hear it on the Bluetooth speaker.
+Play TTS (or any audio file) on the Pi's default output so you hear it on the Bluetooth speaker.
 
 ### How it works
 
@@ -98,7 +98,7 @@ If OpenClaw runs as a **systemd service** under a different user (e.g. `openclaw
 
 ---
 
-## Phase 3: Alarms and scheduled announcements
+## Alarms and scheduled announcements
 
 ### On-demand via chat
 
@@ -118,7 +118,8 @@ Example cron entry (run at 7:00 as the gateway user):
 ```
 
 The briefing script would generate TTS (or fetch a summary and generate TTS), then call `paplay`/`pw-play` or `openclaw-speaker-play.sh` with the resulting file.
-
+Generated files most likely are in /tmp/openclaw folder.
+Don't forget give execute permission to the script `chmod +x openclaw-speaker-play.sh`
 
 ## TODO:
 - [ ] set up different voices for TTS
